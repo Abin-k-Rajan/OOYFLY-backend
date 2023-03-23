@@ -19,7 +19,8 @@ router.post('/login', async (req, res) => {
     user_model.find({email: req.body.email, password: req.body.password}, 'username', function(err, docs){
         if(!docs.length)
         {
-            res.sendStatus(404)
+            res.statusCode = 401
+            res.send('UserName or Password is incorrect')
         }
         else {
             res.json(docs)

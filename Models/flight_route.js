@@ -2,8 +2,8 @@ const mongoose = require('mongoose')
 
 const flightRouteCollection = new mongoose.Schema({
     airplane_id: Number,
-    from: String,
-    to: String,
+    from: Number,
+    to: Number,
     booked_seats: Array,
     airplane_name: String,
     duration: Number,
