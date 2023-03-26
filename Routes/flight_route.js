@@ -47,14 +47,28 @@ router.post('/book-seat', async (req, res) => {
 
 
 router.get('/get-flights', async (req, res) => {
+    const date = new Date(req.query.date)
+    const month = date.getMonth()
+    const year = date.getFullYear()
+    const day = date.getDate()
     flightRouteModel.find({from: req.query.from, to: req.query.to}, function (err, docs) {
         if (err) {
             res.status = err.status
             res.send('Server error at get-flights')
         } else if (docs.length == 0) {
+            res.statusCode = 404
             res.send('No Flights Available')
         } else {
-            res.send(docs)
+            let selected_routes = []
+            docs.forEach(element => {
+                let departure = new Date(element.departure)
+                if (departure.getMonth() == month && departure.getFullYear() == year) {
+                    if (Math.abs(day - departure.getDate()) <= 3) {
+                        selected_routes.push(element)
+                    }
+                }
+            });
+            res.send(selected_routes)
         }
     })
 })
@@ -66,7 +80,8 @@ router.get('/get-flight-detail', async (req, res) => {
             res.statusCode = err.status
             res.send('Server error at get-flight-details')
         } else if (docs.length == 0) {
-            res.send('No Flight found')
+
+            res.sendStatus(401)
         } else {
             res.send(docs)
         }

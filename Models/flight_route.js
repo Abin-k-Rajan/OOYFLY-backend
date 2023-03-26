@@ -9,7 +9,9 @@ const flightRouteCollection = new mongoose.Schema({
     duration: Number,
     departure: Date,
     arrival: Date,
-    rate: Number
+    rate: Number,
+    description: String,
+    photo: String
 }, {
     collection: 'flightRouteCollection'
 })
